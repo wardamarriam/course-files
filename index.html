@@ -1,47 +1,679 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cryptography Tool</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BabyCare Buddy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4A90E2;
+            --secondary-color: #E8F4FD;
+            --accent-color: #2E7BC6;
+            --text-color: #333;
+            --bg-color: #FFFFFF;
+            --card-bg: #F8FCFF;
+            --shadow: 0 4px 6px rgba(0,0,0,0.1);
+            --border-radius: 12px;
+        }
+
+        .girl-theme {
+            --primary-color: #E91E63;
+            --secondary-color: #FCE4EC;
+            --accent-color: #C2185B;
+            --card-bg: #FFF8FA;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--bg-color) 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .header h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: var(--text-color);
+            opacity: 0.8;
+            font-size: 1.1rem;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 8px;
+            box-shadow: var(--shadow);
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 15px 20px;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-color);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .nav-tab.active {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .nav-tab:hover:not(.active) {
+            background: var(--secondary-color);
+        }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .card h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--secondary-color);
+            color: var(--text-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .emoji-btn {
+            font-size: 2rem;
+            padding: 15px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--secondary-color);
+        }
+
+        .emoji-btn:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow);
+        }
+
+        .log-entry {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid var(--primary-color);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            animation: slideInLeft 0.3s ease;
+        }
+
+        .log-time {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .log-type {
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        .counter-display {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+
+        .counter-item {
+            text-align: center;
+            padding: 15px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            flex: 1;
+            margin: 0 10px;
+        }
+
+        .counter-number {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .counter-label {
+            font-size: 0.9rem;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        .sleep-input {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .time-input {
+            padding: 10px;
+            border: 2px solid var(--secondary-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            background: white;
+            transition: border-color 0.3s ease;
+        }
+
+        .time-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .notes-textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 15px;
+            border: 2px solid var(--secondary-color);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-family: inherit;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+        }
+
+        .notes-textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .log-container {
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 10px 0;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .nav-tabs {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .nav-tab {
+                width: 100%;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .counter-display {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .counter-item {
+                margin: 0;
+            }
+
+            .sleep-input {
+                flex-direction: column;
+            }
+
+            .time-input {
+                width: 100%;
+            }
+
+            .theme-toggle {
+                position: static;
+                margin-bottom: 20px;
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>Cryptography Encryption & Decryption Tool</h1>
-  </header>
+    <div class="container">
+        <button class="theme-toggle" onclick="toggleTheme()">👶 Baby Boy</button>
+        
+        <div class="header">
+            <h1>🍼 BabyCare Buddy</h1>
+            <p>Track your baby's daily activities with love and care</p>
+        </div>
 
-  <section>
-    <h2>Enter your text or upload a .txt file</h2>
-    <textarea id="inputText" placeholder="Enter text here..." rows="4" cols="50"></textarea>
-    <br>
-    <input type="file" id="fileInput" accept=".txt">
-  </section>
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showSection('feeding')">
+                🍼 Feeding
+            </button>
+            <button class="nav-tab" onclick="showSection('diaper')">
+                💩 Diaper
+            </button>
+            <button class="nav-tab" onclick="showSection('sleep')">
+                😴 Sleep
+            </button>
+            <button class="nav-tab" onclick="showSection('notes')">
+                📔 Notes
+            </button>
+        </div>
 
-  <section>
-    <h2>Select Algorithm</h2>
-    <select id="algorithmSelect">
-      <option value="caesar">Caesar Cipher</option>
-      <option value="vigenere">Vigenère Cipher</option>
-      <option value="aes">AES</option>
-      <option value="rsa">RSA</option>
-    </select>
-  </section>
+        <!-- Feeding Section -->
+        <div id="feeding" class="content-section active">
+            <div class="card">
+                <h2>🍼 Feeding Tracker</h2>
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="logFeeding('breast')">
+                        🤱 Breastfeeding
+                    </button>
+                    <button class="btn btn-primary" onclick="logFeeding('bottle')">
+                        🍼 Bottle Feeding
+                    </button>
+                </div>
+                <div class="log-container" id="feedingLog">
+                    <!-- Feeding logs will appear here -->
+                </div>
+            </div>
+        </div>
 
-  <section>
-    <button onclick="encrypt()">Encrypt</button>
-    <button onclick="decrypt()">Decrypt</button>
-  </section>
+        <!-- Diaper Section -->
+        <div id="diaper" class="content-section">
+            <div class="card">
+                <h2>💩 Diaper Tracker</h2>
+                <div class="action-buttons">
+                    <button class="emoji-btn" onclick="logDiaper('wet')" title="Wet Diaper">💧</button>
+                    <button class="emoji-btn" onclick="logDiaper('dirty')" title="Dirty Diaper">💩</button>
+                </div>
+                <div class="counter-display">
+                    <div class="counter-item">
+                        <div class="counter-number" id="wetCount">0</div>
+                        <div class="counter-label">Wet Diapers</div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-number" id="dirtyCount">0</div>
+                        <div class="counter-label">Dirty Diapers</div>
+                    </div>
+                </div>
+                <div class="log-container" id="diaperLog">
+                    <!-- Diaper logs will appear here -->
+                </div>
+            </div>
+        </div>
 
-  <section>
-    <h2>Output</h2>
-    <textarea id="outputText" placeholder="Result will appear here..." rows="4" cols="50" readonly></textarea>
-  </section>
+        <!-- Sleep Section -->
+        <div id="sleep" class="content-section">
+            <div class="card">
+                <h2>😴 Sleep Tracker</h2>
+                <div class="sleep-input">
+                    <label>Start Time:</label>
+                    <input type="time" id="sleepStart" class="time-input">
+                    <label>End Time:</label>
+                    <input type="time" id="sleepEnd" class="time-input">
+                    <button class="btn btn-primary" onclick="logSleep()">
+                        ➕ Add Nap
+                    </button>
+                </div>
+                <div class="log-container" id="sleepLog">
+                    <!-- Sleep logs will appear here -->
+                </div>
+            </div>
+        </div>
 
-  <footer>
-    <p>Created by Team Cryptography</p>
-  </footer>
+        <!-- Notes Section -->
+        <div id="notes" class="content-section">
+            <div class="card">
+                <h2>📔 Notes & Reminders</h2>
+                <textarea 
+                    id="notesArea" 
+                    class="notes-textarea" 
+                    placeholder="Write your notes and reminders here..."
+                    onchange="saveNotes()"
+                ></textarea>
+                <div style="margin-top: 15px;">
+                    <small style="color: var(--text-color); opacity: 0.7;">
+                        💡 Your notes are automatically saved locally
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
 
-  <script src="script.js"></script>
+    <script>
+        // Theme management
+        let currentTheme = 'boy';
+
+        function toggleTheme() {
+            const body = document.body;
+            const toggleBtn = document.querySelector('.theme-toggle');
+            
+            if (currentTheme === 'boy') {
+                body.classList.add('girl-theme');
+                toggleBtn.textContent = '👧 Baby Girl';
+                toggleBtn.style.background = 'var(--primary-color)';
+                currentTheme = 'girl';
+            } else {
+                body.classList.remove('girl-theme');
+                toggleBtn.textContent = '👶 Baby Boy';
+                toggleBtn.style.background = 'var(--primary-color)';
+                currentTheme = 'boy';
+            }
+        }
+
+        // Navigation
+        function showSection(sectionName) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => section.classList.remove('active'));
+            
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Show selected section
+            document.getElementById(sectionName).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+
+        // Data storage
+        let feedingData = [];
+        let diaperData = [];
+        let sleepData = [];
+        let wetDiaperCount = 0;
+        let dirtyDiaperCount = 0;
+
+        // Feeding functions
+        function logFeeding(type) {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString();
+            const dateString = now.toLocaleDateString();
+            
+            const entry = {
+                type: type,
+                time: timeString,
+                date: dateString,
+                timestamp: now.getTime()
+            };
+            
+            feedingData.unshift(entry);
+            displayFeedingLog();
+        }
+
+        function displayFeedingLog() {
+            const logContainer = document.getElementById('feedingLog');
+            logContainer.innerHTML = '';
+            
+            feedingData.slice(0, 10).forEach(entry => {
+                const logEntry = document.createElement('div');
+                logEntry.className = 'log-entry';
+                logEntry.innerHTML = `
+                    <div class="log-time">${entry.time}</div>
+                    <div class="log-type">${entry.type === 'breast' ? '🤱 Breastfeeding' : '🍼 Bottle Feeding'}</div>
+                `;
+                logContainer.appendChild(logEntry);
+            });
+        }
+
+        // Diaper functions
+        function logDiaper(type) {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString();
+            const dateString = now.toLocaleDateString();
+            
+            const entry = {
+                type: type,
+                time: timeString,
+                date: dateString,
+                timestamp: now.getTime()
+            };
+            
+            diaperData.unshift(entry);
+            
+            if (type === 'wet') {
+                wetDiaperCount++;
+                document.getElementById('wetCount').textContent = wetDiaperCount;
+            } else {
+                dirtyDiaperCount++;
+                document.getElementById('dirtyCount').textContent = dirtyDiaperCount;
+            }
+            
+            displayDiaperLog();
+        }
+
+        function displayDiaperLog() {
+            const logContainer = document.getElementById('diaperLog');
+            logContainer.innerHTML = '';
+            
+            diaperData.slice(0, 10).forEach(entry => {
+                const logEntry = document.createElement('div');
+                logEntry.className = 'log-entry';
+                logEntry.innerHTML = `
+                    <div class="log-time">${entry.time}</div>
+                    <div class="log-type">${entry.type === 'wet' ? '💧 Wet Diaper' : '💩 Dirty Diaper'}</div>
+                `;
+                logContainer.appendChild(logEntry);
+            });
+        }
+
+        // Sleep functions
+        function logSleep() {
+            const startTime = document.getElementById('sleepStart').value;
+            const endTime = document.getElementById('sleepEnd').value;
+            
+            if (!startTime || !endTime) {
+                alert('Please enter both start and end times');
+                return;
+            }
+            
+            const now = new Date();
+            const dateString = now.toLocaleDateString();
+            
+            // Calculate duration
+            const start = new Date(`2000-01-01 ${startTime}`);
+            const end = new Date(`2000-01-01 ${endTime}`);
+            let duration = (end - start) / (1000 * 60); // minutes
+            
+            if (duration < 0) {
+                duration += 24 * 60; // Handle overnight sleep
+            }
+            
+            const hours = Math.floor(duration / 60);
+            const minutes = Math.floor(duration % 60);
+            
+            const entry = {
+                startTime: startTime,
+                endTime: endTime,
+                duration: `${hours}h ${minutes}m`,
+                date: dateString,
+                timestamp: now.getTime()
+            };
+            
+            sleepData.unshift(entry);
+            displaySleepLog();
+            
+            // Clear inputs
+            document.getElementById('sleepStart').value = '';
+            document.getElementById('sleepEnd').value = '';
+        }
+
+        function displaySleepLog() {
+            const logContainer = document.getElementById('sleepLog');
+            logContainer.innerHTML = '';
+            
+            sleepData.slice(0, 10).forEach(entry => {
+                const logEntry = document.createElement('div');
+                logEntry.className = 'log-entry';
+                logEntry.innerHTML = `
+                    <div class="log-time">${entry.startTime} - ${entry.endTime}</div>
+                    <div class="log-type">😴 Duration: ${entry.duration}</div>
+                `;
+                logContainer.appendChild(logEntry);
+            });
+        }
+
+        // Notes functions
+        function saveNotes() {
+            const notesText = document.getElementById('notesArea').value;
+            // In a real app, this would save to localStorage
+            // For demo purposes, we'll just show it's working
+            console.log('Notes saved:', notesText);
+        }
+
+        // Initialize the app
+        function initApp() {
+            // Load saved notes (in real app, this would be from localStorage)
+            const savedNotes = ''; // localStorage.getItem('babycare-notes') || '';
+            document.getElementById('notesArea').value = savedNotes;
+            
+            // Reset counters for demo
+            document.getElementById('wetCount').textContent = wetDiaperCount;
+            document.getElementById('dirtyCount').textContent = dirtyDiaperCount;
+        }
+
+        // Start the app
+        initApp();
+    </script>
 </body>
 </html>
